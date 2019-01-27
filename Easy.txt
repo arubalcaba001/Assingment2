@@ -1,0 +1,57 @@
+Sub StockDataEasy():
+    
+    'Declare variables
+
+    Dim Ticker As String
+    Dim TotalStockVolume As Double
+    Dim SummaryTableRow As Integer
+    Dim LastRow As Long
+    Dim r As Long
+    Dim NumSheet As Worksheet
+    
+    'Run the loop for each different worksheet in your workbook
+    For Each NumSheet In Worksheets
+    NumSheet.Activate
+    
+    'Assing the headers and hold places
+    Cells(1, "I").Value = "Ticker"
+    Cells(1, "L").Value = "Total Stock Volume"
+    
+    'Set values in order to hold space
+    TotalStockVolume = 0
+    SummaryTableRow = 2
+    
+    'Find the last row in order to loop.
+    LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+    
+        'Create the loop in order for it to compile the information
+        For r = 2 To LastRow
+    
+            'Start If statement.  This is comparing cell(1,1) to (2,1) and so forth to tally all of the different types of tickers
+            If Cells(r + 1, 1).Value <> Cells(r, 1).Value Then
+    
+                'Set the Then statement to have the output for the above argument
+                Ticker = Cells(r, 1).Value
+            
+    
+                'Define TotalStockValue so that it sums up the information in the volume header
+                TotalStockVolume = TotalStockVolume + Cells(r, 7).Value
+    
+                'Show the Ticker output in the summary table
+                Range("I" & SummaryTableRow).Value = Ticker
+    
+                'Show the Total Stock Volume output in the summary table
+                Range("L" & SummaryTableRow).Value = TotalStockVolume
+      
+                'And one to Summary table row and reset Total Stock Volume
+                SummaryTableRow = SummaryTableRow + 1
+                TotalStockVolume = 0
+        
+                'Then if the above is not true
+                Else
+                TotalStockVolume = TotalStockVolume + Cells(r, 7).Value
+        
+            End If
+        Next r
+      Next NumSheet
+End Sub
